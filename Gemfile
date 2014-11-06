@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+
+gem 'devise'
 # For file upload
 gem "paperclip"
 
