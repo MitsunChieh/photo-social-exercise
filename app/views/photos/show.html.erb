@@ -1,4 +1,6 @@
-<%= image_tag @photo.img.url %>
+<%= simple_format image_tag @photo.img.url %>
 
-<%= link_to 'Back to index', photos_path %>
-<%= link_to 'Delete tihs photo', photo_path(@photo), method: :delete %>
+Uploader: <%= @photo.user.name %>
+
+<%= simple_format link_to 'Back to index', photos_path %>
+<%= simple_format link_to 'Delete tihs photo', photo_path(@photo), method: :delete %>
