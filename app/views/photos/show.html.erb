@@ -1,3 +1,4 @@
 <%= image_tag @photo.img.url %>
 
+<%= link_to 'Back to index', photos_path %>
 <%= link_to 'Delete tihs photo', photo_path(@photo), method: :delete %>
