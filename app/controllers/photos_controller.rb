@@ -1,6 +1,6 @@
 class PhotosController < ApplicationController
 
-  before_action :set_photo, only: [:show, :destroy]
+  before_action :set_photo, only: [:show, :destroy, :like, :unlike]
 
   def index
     @photo = Photo.all
@@ -25,6 +25,21 @@ class PhotosController < ApplicationController
     @photo.delete
 
     redirect_to photos_path
+  end
+
+  def like
+    @like = @photo.likes.build
+    @like.user = current_user
+    @like.save
+
+    redirect_to photo_path(@photo)
+  end
+
+  def unlike
+    @like = Like.where( :user_id => current_user.id, :photo_id => @photo.id ).first
+    @like.destroy
+
+    redirect_to photo_path(@photo)
   end
 
   private

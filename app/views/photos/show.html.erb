@@ -1,6 +1,18 @@
 <%= simple_format image_tag @photo.img.url %>
 
-Uploader: <%= @photo.user.name %>
+Uploader: <%= link_to @photo.user.name, user_path(@photo.user) %><br>
 
-<%= simple_format link_to 'Back to index', photos_path %>
-<%= simple_format link_to 'Delete tihs photo', photo_path(@photo), method: :delete %>
+
+
+<% if @photo.can_be_liked?(current_user) %>
+  <%#= link_to 'Like', photo_likes_path(@photo), :method => :post %>
+  <%= link_to 'Like', like_photo_path(@photo), :method => :post %>
+<% else %>
+  <%# like = @photo.find_like_by_user(current_user) %>
+  <%#= link_to 'unlike', like_path(@photo.likes), method: :delete %>
+  <%= link_to 'Unlike', unlike_photo_path(@photo), :method => :post %>
+<% end %>
+
+<%= @photo.likes.count %><br>
+<%= link_to 'Back to index', photos_path %><br>
+<%= link_to 'Delete tihs photo', photo_path(@photo), method: :delete %>
