@@ -1,11 +1,7 @@
 <% if current_user %>
   <%= link_to 'Photos I subcribed', photos_i_sub_user_path(current_user) %>
 <% end %>
-<br><br>
-
-<% @photo.each do |photo|%>
-  <%= link_to image_tag( photo.img.url(:medium) ), photo_path(photo) %>
-<% end %>
-<br><br>
 <%= link_to 'Add new photo', new_photo_path%>
+<br><br>
 
+  <%= render 'common/showphoto' %>

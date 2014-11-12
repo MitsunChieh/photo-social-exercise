@@ -1,5 +1,5 @@
 Uploader: <%= link_to @photo.user.name, user_path(@photo.user) %>
-
+<br><br>
 <% unless @photo.user == current_user %>
   <% if @photo.can_be_sub?(current_user) %>
     <%= link_to 'Subscribe', subscribe_photo_path(@photo), :method => :post %>
@@ -17,7 +17,7 @@ Uploader: <%= link_to @photo.user.name, user_path(@photo.user) %>
   <%= link_to 'Unlike', unlike_photo_path(@photo), method: :post %>
 <% end %>
 
-<%= @photo.likes.count %><br><br>
+<%= @photo.likes.count %><br>
 Who likes this: <% @photo.like_users.each do |user| %>
                   <%= user.name %>
                 <% end %><br><br>
@@ -25,9 +25,28 @@ Photo description: <%= @photo.description %><br><br>
 
 <% if @photo.can_be_delete?(current_user) %>
   <%= link_to 'Edit description', edit_photo_path(@photo) %>
-  <%= link_to 'Delete tihs photo', photo_path(@photo), method: :delete %>
+  <%= link_to 'Delete this photo', photo_path(@photo), method: :delete %>
 <% end %>
 
-<%= simple_format image_tag @photo.img.url %>
+<%= simple_format image_tag @photo.img.url(:medium) %>
 
+Comment number: <%= @photo.comments_count %>
+<br><br>
+<table>
+  <% @photo.comments.each do |c| %>
+    <tr>
+      <td><%= c.content %></td>
+      <td><%= c.user.name  %></td>
+      <td><% if c.user == current_user %>
+        <%= link_to 'Delete', photo_comment_path(@photo, c), method: :delete %>
+      <% end %></td>
+    </tr>
+  <% end %>
+</table>
+<br><br>
+<%= form_for @comment, url: photo_comments_path(@photo) do |f| %>
+  <%= render 'comment', f: f %>
+  <%= f.submit 'Send comment' %>
+<% end %>
+<br>
 <%= link_to 'Back to index', :root %><br>

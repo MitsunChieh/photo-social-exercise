@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   end
 
   resources :photos do
-    resources :comments
+    resources :comments, controller: 'photo_comments'
     member do
       post :like
       post :unlike
