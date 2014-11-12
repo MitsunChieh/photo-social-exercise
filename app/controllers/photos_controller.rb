@@ -1,6 +1,7 @@
 class PhotosController < ApplicationController
 
-  before_action :set_photo, only: [:show, :edit, :update, :destroy, :like, :unlike]
+  before_action :set_photo, only: [:show, :edit, :update, :destroy,
+                                   :like, :unlike, :subscribe, :unsubscribe]
 
   def index
     @photo = Photo.all
@@ -47,6 +48,21 @@ class PhotosController < ApplicationController
   def unlike
     @like = Like.where( user_id: current_user.id, photo_id: @photo.id ).first
     @like.destroy
+
+    redirect_to photo_path(@photo)
+  end
+
+  def subscribe
+    @sub = @photo.subscribes.build
+    @sub.user = current_user
+    @sub.save
+
+    redirect_to photo_path(@photo)
+  end
+
+  def unsubscribe
+    @sub = Subscribe.where( user_id: current_user.id, photo_id: @photo.id ).first
+    @sub.destroy
 
     redirect_to photo_path(@photo)
   end

@@ -1,5 +1,13 @@
 Uploader: <%= link_to @photo.user.name, user_path(@photo.user) %>
 
+<% unless @photo.user == current_user %>
+  <% if @photo.can_be_sub?(current_user) %>
+    <%= link_to 'Subscribe', subscribe_photo_path(@photo), :method => :post %>
+  <% else %>
+    <%= link_to 'Unsubscribe', unsubscribe_photo_path(@photo), method: :post %>
+  <% end %>
+<% end %>
+
 <% if @photo.can_be_liked?(current_user) %>
   <%#= link_to 'Like', photo_likes_path(@photo), :method => :post %>
   <%= link_to 'Like', like_photo_path(@photo), :method => :post %>
@@ -9,10 +17,10 @@ Uploader: <%= link_to @photo.user.name, user_path(@photo.user) %>
   <%= link_to 'Unlike', unlike_photo_path(@photo), method: :post %>
 <% end %>
 
-<%= @photo.likes.count %><br>
+<%= @photo.likes.count %><br><br>
 Who likes this: <% @photo.like_users.each do |user| %>
                   <%= user.name %>
-                <% end %><br>
+                <% end %><br><br>
 Photo description: <%= @photo.description %><br><br>
 
 <% if @photo.can_be_delete?(current_user) %>
@@ -22,4 +30,4 @@ Photo description: <%= @photo.description %><br><br>
 
 <%= simple_format image_tag @photo.img.url %>
 
-<%= link_to 'Back to index', photos_path %><br>
+<%= link_to 'Back to index', :root %><br>

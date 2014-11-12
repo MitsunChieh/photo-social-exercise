@@ -25,4 +25,8 @@ class Photo < ActiveRecord::Base
     self.user == user
   end
 
+  def can_be_sub?(user)
+    self.subscribes.where( user_id: user.id ).empty?
+  end
+
 end

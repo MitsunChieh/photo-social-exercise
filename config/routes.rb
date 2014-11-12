@@ -1,15 +1,22 @@
 Rails.application.routes.draw do
 
   devise_for :users
-  root 'photos#index'
+  root 'welcome#index'
 
-  resources :users
+  resources :users do
+    member do
+      get 'like' => 'users#photos_i_like', as: :photos_i_like
+      get 'sub' => 'users#photos_i_sub', as: :photos_i_sub
+    end
+  end
 
   resources :photos do
-
+    resources :comments
     member do
       post :like
       post :unlike
+      post :subscribe
+      post :unsubscribe
     end
   end
 
