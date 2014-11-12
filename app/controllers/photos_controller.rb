@@ -1,6 +1,6 @@
 class PhotosController < ApplicationController
 
-  before_action :set_photo, only: [:show, :destroy, :like, :unlike]
+  before_action :set_photo, only: [:show, :edit, :update, :destroy, :like, :unlike]
 
   def index
     @photo = Photo.all
@@ -11,7 +11,7 @@ class PhotosController < ApplicationController
   end
 
   def create
-    @photo = Photo.new( user_params )
+    @photo = Photo.new( photo_params )
     @photo.user = current_user
     @photo.save
 
@@ -19,6 +19,15 @@ class PhotosController < ApplicationController
   end
 
   def show
+  end
+
+  def edit
+  end
+
+  def update
+    @photo.update(description: photo_params[:description])
+
+    redirect_to photo_path(@photo)
   end
 
   def destroy
@@ -36,7 +45,7 @@ class PhotosController < ApplicationController
   end
 
   def unlike
-    @like = Like.where( :user_id => current_user.id, :photo_id => @photo.id ).first
+    @like = Like.where( user_id: current_user.id, photo_id: @photo.id ).first
     @like.destroy
 
     redirect_to photo_path(@photo)
@@ -48,8 +57,8 @@ class PhotosController < ApplicationController
     @photo = Photo.find(params[:id])
   end
 
-  def user_params
-    params.require(:photo).permit(:img)
+  def photo_params
+    params.require(:photo).permit(:img, :description)
   end
 
 end
