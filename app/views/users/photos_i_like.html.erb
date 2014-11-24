@@ -1,8 +1,0 @@
-<% if @photo.empty? %>
-  Do not have liked photo<br>
-<% else %>
-  <%= render 'common/showphoto' %>
-<% end %>
-
-<br>
-<%= link_to 'Back to user\'s own photo', user_path(@user) %>

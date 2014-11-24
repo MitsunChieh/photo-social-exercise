@@ -12,7 +12,11 @@ class PhotoCommentsController < ApplicationController
   end
 
   def destroy
-    @comment.destroy
+    if current_user == @comment.user
+      @comment.destroy
+    # else
+    #   raise "HACK!"
+    end
     redirect_to photo_path(@photo)
   end
 

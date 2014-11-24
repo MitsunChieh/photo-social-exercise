@@ -4,7 +4,7 @@ class PhotosController < ApplicationController
                                    :like, :unlike, :subscribe, :unsubscribe]
 
   def index
-    @photo = Photo.all
+    @photo = Photo.order("id DESC")
   end
 
   def new
@@ -47,8 +47,8 @@ class PhotosController < ApplicationController
   end
 
   def unlike
-    @like = Like.where( user_id: current_user.id, photo_id: @photo.id ).first
-    @like.destroy
+    @like = @photo.find_like_by_user(current_user)
+    @like.destroy if @like
 
     redirect_to photo_path(@photo)
   end

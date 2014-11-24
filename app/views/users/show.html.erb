@@ -1,14 +1,34 @@
 <%= @user.name %>
-<%= link_to 'Photos I liked', photos_i_like_user_path(@user)%>
-<% if current_user == @user %>
-  <%= link_to 'Photos I subcribed', photos_i_sub_user_path(current_user) %>
+<% unless current_user %>
+  <% case current_user.friendship_status?(@user) %>
+  <% when true %>
+    <%= link_to 'Send friendship requirement' %>
+  <% when %>
+    <%= link_to 'Friendship requirement pending' %>
+    <%= link_to 'You are friends' %>
+  <% end %>
 <% end %>
+<br>
+
+<% unless current_page?(user_path(@user)) %>
+  <%= link_to 'Uploaded photos', user_path(@user) %>
+<% end %>
+
+<% if (@user.likes.count > 0) && !current_page?(photos_i_like_user_path(@user)) %>
+  <%= link_to 'Look photos '+@user.name+' liked', photos_i_like_user_path(@user) %>
+<% end %>
+
+<% if (current_user == @user) && !current_page?(photos_i_sub_user_path(@user)) %>
+  <%= link_to 'Photos I subcribed', photos_i_sub_user_path(current_user) %>
+  <% if @photo.empty? %>
+    Do not have subscribed photo
+  <% end %>
+<% end %>
+
+
 <br><br>
-My own Photo <br>
-<% @photo = @user.photos %>
+<%= @title %> <br>
 <%= render 'common/showphoto' %>
-<br>
-<br>
 <%#= link_to 'Back to user index', users_path %>
-<%= link_to 'Go to photo index', :root %>
+<%= link_to 'Go to photo index', :root, class: "to-index" %>
 <%#= link_to 'Back forward', :back %>
